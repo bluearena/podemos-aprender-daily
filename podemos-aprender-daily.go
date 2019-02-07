@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"log"
+	"podemos-aprender-daily/dataAccessLayer"
 	"strconv"
 	"strings"
 
@@ -34,9 +35,8 @@ func main() {
 		msgText := update.Message.Text
 
 		if strings.HasPrefix(msgText, "@time") {
-			log.Printf("[%s] %s", update.Message.From.UserName, msgText)
 
-			response := getResponse(msgText)
+			response := processMsg(msgText)
 
 			msg := tgbotapi.NewMessage(update.Message.Chat.ID, response)
 			msg.ReplyToMessageID = update.Message.MessageID
@@ -47,7 +47,7 @@ func main() {
 	}
 }
 
-func getResponse(msgText string) string {
+func processMsg(msgText string) string {
 
 	// get project and hours from message text
 	msgContent := strings.Split(msgText, ",")
@@ -58,8 +58,8 @@ func getResponse(msgText string) string {
 		return formatErr
 	}
 
-	// extract project name form array
-	project := msgContent[1]
+	// extract project name from array
+	project := removeSpaces(msgContent[1])
 
 	// remove spaces and convert to integer
 	hours, err := strconv.Atoi(removeSpaces(msgContent[2]))
@@ -67,27 +67,17 @@ func getResponse(msgText string) string {
 		return formatErr
 	}
 
-	addHours(project, hours)
-	hoursInvested := getTimeInvested(project)
+	dataAccessLayer.AddHours(project, hours)
+	hoursInvested := dataAccessLayer.GetTimeInvested(project)
 
 	var response bytes.Buffer // efficient way to concatenate strings
 	response.WriteString("Actualmente se llevan ")
 	response.WriteString(strconv.Itoa(hoursInvested))
-	response.WriteString(" invertidas en el proyecto ")
+	response.WriteString(" horas trabajadas en el proyecto ")
 	response.WriteString(project)
 	return response.String()
 }
 
 func removeSpaces(s string) string {
 	return strings.Join(strings.Fields(s), " ")
-}
-
-/* it will be better split logic and access data,
-but for the moment we will maintain all together in the same layer */
-func addHours(project string, hours int) {
-
-}
-
-func getTimeInvested(project string) int {
-	return 0
 }
