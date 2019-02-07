@@ -24,10 +24,10 @@ func AddHours(project string, hours int) {
 	client, ctx := getClient()
 	collection := client.Database("podemos-aprender").Collection("daily")
 
-	newObj := bson.D{
-		{"hours", hours},
-		{"project", project},
-		{"time", time.Now()},
+	newObj := DailyModel{
+		Hours:   hours,
+		Project: project,
+		Time:    time.Now(),
 	}
 
 	collection.InsertOne(ctx, newObj)
