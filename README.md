@@ -1,6 +1,6 @@
 # Podemos Aprender - Daily 
 
-Project to track information about daily scrum through a telegram bot.
+Project to track information about daily scrum for "podemos aprender" through a telegram bot.
 
 * [GitHub Repository](https://github.com/sosamatias/podemos-aprender-daily?fbclid=IwAR3iLKJ4bnduTwyvD8vKUWTvoTp46MCrECD_iCYCeL3RKGuZuMo_83tdxis)
 
