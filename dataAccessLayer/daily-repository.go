@@ -52,10 +52,7 @@ func GetTimeInvested(project string) int {
 	}
 	defer cursor.Close(context.Background())
 
-	type sumModel struct {
-		Hours int `bson:"hours"`
-	}
-	itemRead := sumModel{}
+	itemRead := DailyModel{}
 	cursor.Next(context.Background())
 	cursor.Decode(&itemRead)
 
